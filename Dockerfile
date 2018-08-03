@@ -18,6 +18,7 @@ RUN chmod a+x $OPT/bin/run_gridss.sh
 COPY build/build.sh build/
 RUN bash build/build.sh
 
+USER ubuntu
 WORKDIR /home/ubuntu
 
 CMD ls

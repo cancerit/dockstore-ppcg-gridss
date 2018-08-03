@@ -8,7 +8,8 @@ apt-get update
 # bash -c '/bin/echo debconf shared/accepted-oracle-license-v1-1 seen true | /usr/bin/debconf-set-selections'
 # apt-get -yq update
 # apt-get -yq install --no-install-recommends oracle-java8-installer
-apt install -y openjdk-8-jre-headless
+apt-get install -yq --no-install-recommends openjdk-8-jre-headless
 
 # install other dependencies
-apt-get install -yq bwa r-base
+apt-get install -y --no-install-recommends bwa
+apt-get install -y --no-install-recommends r-base

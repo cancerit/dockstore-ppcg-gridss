@@ -1,4 +1,4 @@
-FROM ubuntu:bionic
+FROM ubuntu:16.04
 
 MAINTAINER yx2@sanger.ac.uk
 

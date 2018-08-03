@@ -81,8 +81,8 @@ inputs:
 
   other_tumours:
     type:
-    - null
-    - array
+    - "null"
+    - type: array
       items: File
       inputBinding:
         prefix: -r

@@ -10,4 +10,4 @@ sudo apt-get -yq update
 sudo apt-get -yq install --no-install-recommends oracle-java8-installer
 
 # install dependencies
-sudo apt-get install -yq --no-install-recommends bwa s3cmd r-base
+sudo apt-get install -yq --no-install-recommends bwa r-base

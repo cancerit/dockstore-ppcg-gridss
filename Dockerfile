@@ -9,16 +9,15 @@ USER root
 
 RUN adduser --disabled-password --gecos '' ubuntu && chsh -s /bin/bash && mkdir -p /home/ubuntu
 
+ENV OPT /opt/wtsi-cgp
+ENV PATH $OPT/bin:$PATH
+RUN mkdir -p $OPT/bin
+COPY scripts/run_gridss.sh $OPT/bin
+RUN chmod a+x $OPT/bin/run_gridss.sh
+
 COPY build/build.sh build/
 RUN bash build/build.sh
 
-COPY scripts/run_gridss.sh /usr/bin/
-RUN chmod a+x /usr/bin/run_gridss.sh
-
-USER ubuntu
-COPY data/ENCFF001TDO_GRCh37.bed /home/ubuntu/
-RUN chmod a+r /home/ubuntu/ENCFF001TDO_GRCh37.bed
-
 WORKDIR /home/ubuntu
 
-CMD ["/bin/bash"]
+CMD ls

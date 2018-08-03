@@ -1,23 +1,32 @@
 #! /bin/bash
 
 function usage {
-  echo -e "\nUsage: run_gridss.sh [-j file] -t int -s file -b file -l file -n file -p file [-t file] [-t file] \n";
-  echo " -j file: GRIDSS jar file, default: https://github.com/PapenfussLab/gridss/releases/download/v1.7.1/gridss-1.7.1-gridss-jar-with-dependencies.jar.";
+  echo -e "\nUsage: run_gridss.sh -j file -k file -c file -i file -t int -s file -b file -l file -n file -p file [-t file] [-t file] \n";
+  echo " -j file: GRIDSS jar file";
+  echo " -k file: Black list bed file for GRIDSS";
+  echo " -c file: Sanger core reference tar file";
+  echo " -i file: Sanger BWA index tar file";
   echo " -t int: number of threads to use.";
   echo " -s file: output SV file in VCF format.";
   echo " -b file: output BAM.";
   echo " -l file: output log file.";
   echo " -n file : input normal BAM file.";
   echo " -p file : input primary tumour BAM file.";
-  echo " -r file : other tumour BAM of the same individual, use -t for each file when there are more than one file";
+  echo " -r file : other tumour BAM of the same individual, use -r for each additional tumour BAM when there are more";
 }
 
 # processing the inputs
-while getopts ":hj:t:s:b:l:n:p:r:" opt; do
+while getopts ":hj:t:s:b:l:n:p:r:k:c:i:" opt; do
   case $opt in
     h ) usage
         exit 0 ;;
     j ) GRIDSSS_JAR="$OPTARG"
+        if [ ! -f "$OPTARG" ]; then echo -e "\nError: $OPTARG does not exist" >&2; exit 1; fi ;;
+    k ) BLACK_LIST="$OPTARG"
+        if [ ! -f "$OPTARG" ]; then echo -e "\nError: $OPTARG does not exist" >&2; exit 1; fi ;;
+    c ) SANGER_REF="$OPTARG"
+        if [ ! -f "$OPTARG" ]; then echo -e "\nError: $OPTARG does not exist" >&2; exit 1; fi ;;
+    i ) SANGER_BWA_IDX="$OPTARG"
         if [ ! -f "$OPTARG" ]; then echo -e "\nError: $OPTARG does not exist" >&2; exit 1; fi ;;
     t ) WORKER_THREADS="$OPTARG"
         if [[ ! $OPTARG =~ ^-?[0-9]+$ ]]; then echo -e "\nError: $OPTARG should be an integer" >&2; exit 1; fi ;;
@@ -59,14 +68,17 @@ if [ "-$OUTPUT_BAM" == "-" ]; then echo "Error: missing mandatory parameter -b."
 if [ "-$OUTPUT_LOG" == "-" ]; then echo "Error: missing mandatory parameter -l." >&2; exit 1; fi
 if [ "-$INTPUT_NORMAL" == "-" ]; then echo "Error: missing mandatory parameter -n." >&2; exit 1; fi
 if [ "-$INTPUT_PRI_TUMOUR" == "-" ]; then echo "Error: missing mandatory parameter -p." >&2; exit 1; fi
+if [ "-$BLACK_LIST" == "-" ]; then echo "Error: missing mandatory parameter -k." >&2; exit 1; fi
+if [ "-$GRIDSSS_JAR" == "-" ]; then echo "Error: missing mandatory parameter -j." >&2; exit 1; fi
+if [ "-$SANGER_REF" == "-" ]; then echo "Error: missing mandatory parameter -c." >&2; exit 1; fi
+if [ "-$SANGER_BWA_IDX" == "-" ]; then echo "Error: missing mandatory parameter -i." >&2; exit 1; fi
 
 # asign default
 JAVA_TMP_DIR=/tmp/java_tmp_dir
 mkdir -p $JAVA_TMP_DIR
 WORKING_DIR=$HOME
-GENOME_REF_FILE=$HOME/core_ref_GRCh37d5/genome.fa
-BLACK_LIST=/home/ubuntu/ENCFF001TDO_GRCh37.bed
-if [ ! -f "$BLACK_LIST" ]; then echo -e "\nError: $BLACK_LIST does not exist" >&2; exit 1; fi
+REF_DIR=$HOME/ref
+GENOME_REF_FILE=$REF_DIR/genome.fa
 
 OTHER_TUMOUR_FILES_STRING=""
 if [ ${#INTPUT_OTHER_TUMOURS[@]} != 0 ];
@@ -79,18 +91,10 @@ fi
 
 set -xe
 
-if [ "-$GRIDSSS_JAR" == "-" ];
-then
-  GRIDSSS_JAR=$HOME/gridss-jar-with-dependencies.jar
-  curl -SsL https://github.com/PapenfussLab/gridss/releases/download/v1.7.1/gridss-1.7.1-gridss-jar-with-dependencies.jar > $GRIDSSS_JAR
-fi
-
 # Prepare references
-curl -SsL ftp://ftp.sanger.ac.uk/pub/cancer/dockstore/human/core_ref_GRCh37d5.tar.gz > $HOME/core_ref_GRCh37d5.tar.gz
-tar xzf $HOME/core_ref_GRCh37d5.tar.gz
-curl -SsL ftp://ftp.sanger.ac.uk/pub/cancer/dockstore/human/bwa_idx_GRCh37d5.tar.gz > $HOME/bwa_idx_GRCh37d5.tar.gz
-tar xzf $HOME/bwa_idx_GRCh37d5.tar.gz
-mv -f $HOME/bwa_idx_GRCh37d5/* $HOME/core_ref_GRCh37d5
+mkdir -p $REF_DIR
+tar xzf $SANGER_REF -C $REF_DIR --strip-components 1
+tar xzf $SANGER_BWA_IDX -C $REF_DIR --strip-components 1
 
 java -ea -Xmx40g \
 -Dsamjdk.create_index=true \

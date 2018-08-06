@@ -1,0 +1,47 @@
+{
+  "gridss_jar":{
+    "path": "s3://team78-pan-prostate/ref/human/GRIDSS/gridss-1.7.1-gridss-jar-with-dependencies.jar",
+    "class": "File"
+  },
+  "gridss_black_list":{
+    "path": "s3://team78-pan-prostate/ref/human/GRIDSS/ENCFF001TDO_GRCh37.bed",
+    "class": "File"
+  },
+  "sanger_core_ref_tar":{
+    "path": "s3://team78-pan-prostate/ref/human/core_ref_GRCh37d5.tar.gz",
+    "class": "File"
+  },
+  "sanger_bwa_index_tar":{
+    "path": "s3://team78-pan-prostate/ref/human/bwa_idx_GRCh37d5.tar.gz",
+    "class": "File"
+  },
+  "threads": 12,
+  "normal":{
+    "path": "/home/ubuntu/test_bams/aadd1a10-15ef-11e7-a03e-67744dfd4041.cgpmap.bam",
+    "class": "File"
+  },
+  "primary_tumour":{
+    "path": "/home/ubuntu/test_bams/9e96d5e4-15fd-11e7-8bcb-67744dfd4041.cgpmap.bam",
+    "class": "File"
+  },
+  "output_vcf":{
+    "path": "/tmp/out.vcf",
+    "class": "File"
+  },
+  "output_bam":{
+    "path": "/tmp/out.bam",
+    "class": "File"
+  },
+  "output_log":{
+    "path": "/tmp/out.log",
+    "class": "File"
+  }
+}
+
+
+"other_tumours": [
+  {
+    "path": "ftp://ftp.sanger.ac.uk/pub/cancer/dockstore/human/core_ref_GRCh37d5.tar.gz",
+    "class": "File"
+  }
+],

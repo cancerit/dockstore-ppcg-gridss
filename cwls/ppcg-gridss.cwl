@@ -93,6 +93,7 @@ inputs:
   output_vcf_name:
     type: string
     doc: "output VCF file name"
+    default: "out.vcf"
     inputBinding:
       prefix: -s
       separate: true
@@ -101,6 +102,7 @@ inputs:
   output_bam_name:
     type: string
     doc: "output BAM file name"
+    default: "out.bam"
     inputBinding:
       prefix: -b
       separate: true
@@ -109,33 +111,31 @@ inputs:
   output_log_name:
     type: string
     doc: "output log file name"
+    default: "out.log"
     inputBinding:
       prefix: -l
       separate: true
       shellQuote: true
 
 outputs:
+
   output_vcf:
     type: File
     outputBinding:
       glob: $(inputs.output_vcf_name)
+    secondaryFiles: .idx
 
   output_bam:
     type: File
     outputBinding:
       glob: $(inputs.output_bam_name)
+    secondaryFiles:
+      - .throttled.bed
+      - ^.bai
 
   output_log:
     type: File
     outputBinding:
       glob: $(inputs.output_log_name)
 
-need to capture these files:
-patient1.gridss.assembly.bam
-patient1.gridss.assembly.bai
-patient1.gridss.assembly.bam.throttled.bed
-
-patient1.sv.vcf
-patient1.sv.vcf.idx
-
-baseCommand: [""]
+baseCommand: ["run_gridss.sh"]

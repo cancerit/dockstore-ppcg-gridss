@@ -1,15 +1,15 @@
 #! /bin/bash
 
 function usage {
-  echo -e "\nUsage: run_gridss.sh -j file -k file -c file -i file -t int -s file -b file -l file -n file -p file [-t file] [-t file] \n";
+  echo -e "\nUsage: run_gridss.sh -j file -k file -c file -i file -t int [-s file] [-b file] [-l file] -n file -p file [-t file] [-t file] \n";
   echo " -j file: GRIDSS jar file";
   echo " -k file: Black list bed file for GRIDSS";
   echo " -c file: Sanger core reference tar file";
   echo " -i file: Sanger BWA index tar file";
   echo " -t int: number of threads to use.";
-  echo " -s file: output SV file in VCF format.";
-  echo " -b file: output BAM.";
-  echo " -l file: output log file.";
+  echo " -s file: output SV file in VCF format, default: out.vcf.";
+  echo " -b file: output BAM, default: out.bam.";
+  echo " -l file: output log file, default: out.log.";
   echo " -n file : input normal BAM file.";
   echo " -p file : input primary tumour BAM file.";
   echo " -r file : other tumour BAM of the same individual, use -r for each additional tumour BAM when there are more";
@@ -63,9 +63,6 @@ fi
 
 # check mandatory options:
 if [ "-$WORKER_THREADS" == "-" ]; then echo "Error: missing mandatory parameter -t." >&2; exit 1; fi
-if [ "-$OUTPUT_SV" == "-" ]; then echo "Error: missing mandatory parameter -s." >&2; exit 1; fi
-if [ "-$OUTPUT_BAM" == "-" ]; then echo "Error: missing mandatory parameter -b." >&2; exit 1; fi
-if [ "-$OUTPUT_LOG" == "-" ]; then echo "Error: missing mandatory parameter -l." >&2; exit 1; fi
 if [ "-$INTPUT_NORMAL" == "-" ]; then echo "Error: missing mandatory parameter -n." >&2; exit 1; fi
 if [ "-$INTPUT_PRI_TUMOUR" == "-" ]; then echo "Error: missing mandatory parameter -p." >&2; exit 1; fi
 if [ "-$BLACK_LIST" == "-" ]; then echo "Error: missing mandatory parameter -k." >&2; exit 1; fi
@@ -79,6 +76,9 @@ mkdir -p $JAVA_TMP_DIR
 WORKING_DIR=$HOME
 REF_DIR=$HOME/ref
 GENOME_REF_FILE=$REF_DIR/genome.fa
+if [ "-$OUTPUT_SV" == "-" ]; then OUTPUT_SV="out.vcf"; fi
+if [ "-$OUTPUT_BAM" == "-" ]; then OUTPUT_BAM="out.bam"; fi
+if [ "-$OUTPUT_LOG" == "-" ]; then OUTPUT_LOG="out.log"; fi
 
 OTHER_TUMOUR_FILES_STRING=""
 if [ ${#INTPUT_OTHER_TUMOURS[@]} != 0 ];

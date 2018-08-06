@@ -12,11 +12,6 @@ doc: |
     ![build_status](https://quay.io/repository/wtsicgp/dockstore-ppcg-gridss/status)
     A Docker container to run GRIDSS for PPCG. See the [dockstore-ppcg-gridss](https://github.com/cancerit/dockstore-ppcg-gridss) website for more information.
 
-dct:creator:
-  "@id": "yaobo.xu@sanger.ac.uk"
-  foaf:name: Yaobo Xu
-  foaf:mbox: "yx2@sanger.ac.uk"
-
 requirements:
   - class: DockerRequirement
     dockerPull: "quay.io/wtsicgp/dockstore-ppcg-gridss:0.1.0"
@@ -139,3 +134,18 @@ outputs:
       glob: $(inputs.output_log_name)
 
 baseCommand: ["run_gridss.sh"]
+
+
+$schemas:
+  - http://schema.org/docs/schema_org_rdfa.html
+
+$namespaces:
+  s: http://schema.org/
+
+s:codeRepository: https://github.com/cancerit/dockstore-cgpmap
+s:license: https://spdx.org/licenses/AGPL-3.0-only
+
+s:author:
+  - class: s:Person
+    s:email: mailto:yx2@sanger.ac.uk
+    s:name: Yaobo Xu

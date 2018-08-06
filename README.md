@@ -1,6 +1,6 @@
 # dockstore-ppcg-gridss
 
-dockstore tool for running [GRIDSS](https://github.com/PapenfussLab/gridss).
+A simple wrapper for running [GRIDSS](https://github.com/PapenfussLab/gridss) using Dockstore.
 
 [![Docker Repository on Quay](https://quay.io/repository/wtsicgp/dockstore-ppcg-gridss/status "Docker Repository on Quay")](https://quay.io/repository/wtsicgp/dockstore-ppcg-gridss)
 

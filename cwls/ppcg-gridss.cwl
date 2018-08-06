@@ -142,7 +142,7 @@ $schemas:
 $namespaces:
   s: http://schema.org/
 
-s:codeRepository: https://github.com/cancerit/dockstore-cgpmap
+s:codeRepository: https://github.com/cancerit/dockstore-ppcg-gridss
 s:license: https://spdx.org/licenses/AGPL-3.0-only
 
 s:author:

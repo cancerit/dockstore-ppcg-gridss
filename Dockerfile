@@ -3,7 +3,7 @@ FROM ubuntu:16.04
 MAINTAINER yx2@sanger.ac.uk
 
 LABEL uk.ac.sanger.cgp="Cancer Genome Project, Wellcome Trust Sanger Institute" \
-      description="tool to produce and post file checksum for dockstore.org"
+      description="an Java env with BWA and R to run GRIDSS"
 
 USER root
 

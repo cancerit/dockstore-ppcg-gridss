@@ -14,7 +14,7 @@ doc: |
 
 requirements:
   - class: DockerRequirement
-    dockerPull: "quay.io/wtsicgp/dockstore-ppcg-gridss:v0.1.0"
+    dockerPull: "quay.io/wtsicgp/dockstore-ppcg-gridss:0.1.3"
 
 inputs:
 
